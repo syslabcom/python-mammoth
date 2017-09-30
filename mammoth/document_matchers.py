@@ -58,8 +58,8 @@ def equal_to(value):
 
 def _operator_equal_to(first, second):
     return first.upper() == second.upper()
-    
-    
+
+
 def starts_with(value):
     return StringMatcher(_operator_starts_with, value)
 
@@ -71,6 +71,6 @@ def _operator_starts_with(first, second):
 class StringMatcher(object):
     operator = cobble.field()
     value = cobble.field()
-    
+
     def matches(self, other):
         return self.operator(self.value, other)
