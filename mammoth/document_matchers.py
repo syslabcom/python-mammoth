@@ -52,18 +52,36 @@ page_break = BreakMatcher("page")
 column_break = BreakMatcher("column")
 
 
+def safe_unicode(value, encoding='utf-8'):
+    """ Converts a value to unicode, even if it is already a unicode string.
+    """
+    if isinstance(value, unicode):
+        return value
+    elif isinstance(value, basestring):
+        try:
+            value = unicode(value, encoding)
+        except (UnicodeDecodeError):
+            value = value.decode('utf-8', 'replace')
+    return value
+
+
 def equal_to(value):
     return StringMatcher(_operator_equal_to, value)
 
 
 def _operator_equal_to(first, second):
+    if isinstance(second, unicode):
+        first = safe_unicode(first)
     return first.upper() == second.upper()
 
 
 def starts_with(value):
     return StringMatcher(_operator_starts_with, value)
 
+
 def _operator_starts_with(first, second):
+    if isinstance(second, unicode):
+        first = safe_unicode(first)
     return second.upper().startswith(first.upper())
 
 
